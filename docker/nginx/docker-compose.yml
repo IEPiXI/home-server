@@ -1,0 +1,33 @@
+services:
+    nginx:
+        image: nginx:latest
+        container_name: nginx-proxy
+        restart: unless-stopped
+        networks:
+            - home-server
+            - nextcloud-aio
+        ports:
+            - "80:80"
+            - "443:443"
+        env_file:
+            - .env
+        volumes:
+            - ./default.conf.template:/etc/nginx/templates/default.conf.template
+            - ./letsencrypt/conf:/etc/letsencrypt
+            - ./nginx-entrypoint.sh:/nginx-entrypoint.sh
+        entrypoint: /nginx-entrypoint.sh
+    certbot:
+        image: certbot/dns-cloudflare
+        container_name: certbot
+        restart: unless-stopped
+        env_file:
+            - .env
+        volumes:
+            - ./letsencrypt/conf:/etc/letsencrypt
+            - ./certbot-entrypoint.sh:/certbot-entrypoint.sh
+        entrypoint: /certbot-entrypoint.sh
+networks:
+    home-server:
+        external: true
+    nextcloud-aio:
+        external: true

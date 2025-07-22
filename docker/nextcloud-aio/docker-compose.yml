@@ -1,0 +1,25 @@
+# docker/nextcloud-aio/docker-compose.yml
+services:
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    container_name: nextcloud-aio-mastercontainer
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SKIP_DOMAIN_VALIDATION=true
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=0.0.0.0
+      - NEXTCLOUD_DATADIR=/home/data/nextcloud
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - home-server
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
+
+networks:
+  home-server:
+    external: true

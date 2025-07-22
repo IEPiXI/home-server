@@ -1,0 +1,38 @@
+services:
+    vaultwarden:
+        image: vaultwarden/server:latest
+        container_name: vaultwarden
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            - SIGNUPS_ALLOWED=false
+            - SHOW_LAST_LOGIN=true
+            - IP_HEADER=X-Forwarded-For
+            - FAIL2BAN_ENABLED=true
+            - FAIL2BAN_MAX_RETRY=6
+            - FAIL2BAN_FIND_TIME=60
+            - FAIL2BAN_BAN_TIME=3600
+        volumes:
+            - ./vw-data/:/data/
+        networks:
+            - home-server
+    vaultwarden-backup:
+        image: ttionya/vaultwarden-backup:latest
+        container_name: vaultwarden-backup
+        restart: unless-stopped
+        env_file:
+            - .env.backup
+        environment:
+            - DATA_DIR=/data
+            - CRON=0 3 * * *
+            - VW_CONTAINER_NAME=vaultwarden
+            - BACKUP_KEEP_DAYS=7
+            - TZ=Europe/Berlin
+        volumes:
+            - ./vw-data/:/data/:ro
+            - ./rclone.conf:/config/rclone/rclone.conf:ro
+            - /var/run/docker.sock:/var/run/docker.sock
+networks:
+    home-server:
+        external: true

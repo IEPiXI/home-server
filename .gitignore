@@ -1,0 +1,6 @@
+letsencrypt/
+*.ini
+vw-data/
+*.conf
+.env
+.env.*
