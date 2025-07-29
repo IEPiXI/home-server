@@ -4,8 +4,11 @@ services:
         container_name: nginx-proxy
         restart: unless-stopped
         networks:
-            - home-server
-            - nextcloud-aio
+            home-server:
+              aliases:
+                - "nextcloud.${DOMAIN}"
+                - "office.${DOMAIN}"
+            nextcloud-aio:
         ports:
             - "80:80"
             - "443:443"

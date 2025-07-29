@@ -13,13 +13,29 @@ services:
       - NEXTCLOUD_DATADIR=/home/data/nextcloud
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - home-server
+  collabora-code:
+    image: collabora/code:latest
+    container_name: collabora-code
+    restart: unless-stopped
+    networks:
+      - home-server
+      - nextcloud-aio
+    environment:
+      - 'domain=nextcloud.${DOMAIN}'
+      - 'dictionaries=en_US en_GB de_DE'
+      - 'extra_params=--o:ssl.enable=false --o:ssl.termination=true --o:server_name=office.${DOMAIN}'
+    cap_add:
+      - MKNOD
+
 volumes:
   nextcloud_aio_mastercontainer:
     name: nextcloud_aio_mastercontainer
 
 networks:
   home-server:
+    external: true
+  nextcloud-aio:
     external: true
