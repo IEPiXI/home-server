@@ -22,7 +22,7 @@ services:
         container_name: vaultwarden-backup
         restart: unless-stopped
         env_file:
-            - .env.backup
+            - .env
         environment:
             - DATA_DIR=/data
             - CRON=0 3 * * *

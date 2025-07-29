@@ -10,7 +10,9 @@ services:
       - SKIP_DOMAIN_VALIDATION=true
       - APACHE_PORT=11000
       - APACHE_IP_BINDING=0.0.0.0
-      - NEXTCLOUD_DATADIR=/home/data/nextcloud
+      - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1 --keep-monthly=1
+      - NEXTCLOUD_DATADIR=${DATA_DIR}/nextcloud
+
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -29,6 +31,22 @@ services:
       - 'extra_params=--o:ssl.enable=false --o:ssl.termination=true --o:server_name=office.${DOMAIN}'
     cap_add:
       - MKNOD
+  nextcloud-backup:
+    image: alpine:latest
+    container_name: nextcloud-backup
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ${BACKUP_DIR}/nextcloud:/backups/source
+      - ./rclone.conf:/config/rclone/rclone.conf:ro
+      - ./backup.sh:/usr/local/bin/backup.sh:ro
+    command: >
+      sh -c "apk add --no-cache rclone zip cronie &&
+           echo '0 6 * * * /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1' > /var/spool/cron/crontabs/root &&
+           crond -f"
+    networks:
+      - home-server
 
 volumes:
   nextcloud_aio_mastercontainer:
