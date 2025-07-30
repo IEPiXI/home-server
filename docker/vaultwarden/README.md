@@ -42,7 +42,9 @@ You will need the following files within this directory, in order to run the **v
 
     For further instructions, also refer to the [rclone docs](https://rclone.org/), (e.g. for [setting up GDrive](https://rclone.org/drive/#making-your-own-client-id))
 
-### Manual Backup
+## Backup
+
+## Manual Backup
 
 After creating the **vaultwarden-backup** container, you can test/trigger the backup with:
 
@@ -51,3 +53,16 @@ docker exec vaultwarden-backup bash /app/backup.sh
 ```
 
 For further instructions, also refer to the [vaultwarden-backup docs](https://github.com/ttionya/vaultwarden-backup/tree/master/docs), (e.g. for triggering [manual backups](https://github.com/ttionya/vaultwarden-backup/blob/master/docs/manually-trigger-a-backup.md))
+
+## Restore Backup
+
+To restore your Vaultwarden instance from a backup, use the `restore-vaultwarden.sh` script:
+
+1. **Download Backup**: First, retrieve the desired backup `.zip` file from your Rclone remote storage (Gdrive, etc.) and place it on the server
+2. **Run Restore**: Execute the script `restore-vaultwarden.sh` with `sudo`, providing the full path to your downloaded backup file
+
+    ```
+    sudo ./restore-vaultwarden.sh /path/to/your/backup.zip
+    ```
+
+3. **Confirm**: The script will prompt for confirmation before stopping the container and replacing the data
