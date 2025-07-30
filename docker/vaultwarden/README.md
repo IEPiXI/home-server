@@ -7,6 +7,7 @@ You will need the following files within this directory, in order to run the **v
     ```
     # mainly for the vaultwarden container
     DOMAIN=https://vaultwarden.your-domain.net
+    DATA_DIR=/home/data
     ADMIN_TOKEN='$argon2id$v=19$m=65540,t=3,p=4$+......'
 
     # mainly for the vaultwarden-backup container using rclone

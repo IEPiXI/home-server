@@ -14,7 +14,7 @@ services:
             - FAIL2BAN_FIND_TIME=60
             - FAIL2BAN_BAN_TIME=3600
         volumes:
-            - ./vw-data/:/data/
+            - ${DATA_DIR}/vaultwarden:/data/
         networks:
             - home-server
     vaultwarden-backup:
@@ -30,7 +30,7 @@ services:
             - BACKUP_KEEP_DAYS=7
             - TZ=Europe/Berlin
         volumes:
-            - ./vw-data/:/data/:ro
+            - ${DATA_DIR}/vaultwarden:/data/:ro
             - ./rclone.conf:/config/rclone/rclone.conf:ro
             - /var/run/docker.sock:/var/run/docker.sock
 networks:

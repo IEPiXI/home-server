@@ -5,9 +5,9 @@ services:
         restart: unless-stopped
         networks:
             home-server:
-              aliases:
-                - "nextcloud.${DOMAIN}"
-                - "office.${DOMAIN}"
+                aliases:
+                    - "nextcloud.${DOMAIN}"
+                    - "office.${DOMAIN}"
             nextcloud-aio:
         ports:
             - "80:80"
@@ -16,7 +16,7 @@ services:
             - .env
         volumes:
             - ./default.conf.template:/etc/nginx/templates/default.conf.template
-            - ./letsencrypt/conf:/etc/letsencrypt
+            - ${DATA_DIR}/letsencrypt:/etc/letsencrypt
             - ./nginx-entrypoint.sh:/nginx-entrypoint.sh
         entrypoint: /nginx-entrypoint.sh
     certbot:
@@ -26,7 +26,7 @@ services:
         env_file:
             - .env
         volumes:
-            - ./letsencrypt/conf:/etc/letsencrypt
+            - ${DATA_DIR}/letsencrypt:/etc/letsencrypt
             - ./certbot-entrypoint.sh:/certbot-entrypoint.sh
         entrypoint: /certbot-entrypoint.sh
 networks:

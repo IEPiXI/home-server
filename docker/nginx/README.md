@@ -8,6 +8,7 @@ You will need the following files within this directory, in order to run the doc
 
     ```
     DOMAIN=your-domain.net
+    DATA_DIR=/home/data
     EMAIL=your-mail@provider.com
     CF_API_TOKEN=API_TOKEN
     ```
