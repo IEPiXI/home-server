@@ -7,6 +7,8 @@ map $http_upgrade $connection_upgrade {
     ''      "";
 }
 
+resolver 127.0.0.11 valid=30s;
+
 # ----------------- Default Server (HTTP -> HTTPS)  ----------------- #
 
 server {
@@ -38,14 +40,14 @@ server {
 
 upstream vaultwarden_app {
     zone vaultwarden_app 64k;
-    server vaultwarden:80;
+    server vaultwarden:80 resolve;
     keepalive 2;
 }
 
 
 upstream vaultwarden_ws {
     zone vaultwarden_ws 64k;
-    server vaultwarden:3012;
+    server vaultwarden:3012 resolve;
     keepalive 2;
 }
 
@@ -55,6 +57,7 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
     http2 on;
+
     server_name vaultwarden.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
@@ -86,7 +89,7 @@ server {
 
 upstream nextcloud_aio_apache {
     zone nextcloud_aio_apache 64k;
-    server nextcloud-aio-apache:11000;
+    server nextcloud-aio-apache:11000 resolve;
     keepalive 2;
 }
 
@@ -141,7 +144,7 @@ server {
 
 upstream collabora_code_server {
     zone collabora_code_server 64k;
-    server collabora-code:9980;
+    server collabora-code:9980 resolve;
     keepalive 2;
 }
 
