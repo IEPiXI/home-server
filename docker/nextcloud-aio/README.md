@@ -34,3 +34,19 @@ After creating the **nextcloud-backup** container, you can test/trigger the back
 ```
 docker exec nextcloud-backup sh /usr/local/bin/backup.sh
 ```
+
+## How to Start, Stop, and Update your NextCloud AIO instance via CLI
+
+```
+# Update mastercontainer
+docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/UpdateMastercontainer.php
+
+# Update then Start containers
+docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StartAndUpdateContainers.php
+
+# Just start the containers
+docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StartContainers.php
+
+# Stop containers
+docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StopContainers.php
+```

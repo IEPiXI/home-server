@@ -13,9 +13,25 @@ services:
       - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1 --keep-monthly=1
       - NEXTCLOUD_DATADIR=${DATA_DIR}/nextcloud
       - NEXTCLOUD_KEEP_DISABLED_APPS=true
+      - START_CONTAINERS=1
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - home-server
+  collabora-configurator:
+    image: docker:20.10
+    container_name: collabora-configurator
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./configure-collabora.sh:/usr/local/bin/configure-collabora.sh:ro
+    env_file:
+      - .env
+    command: "sh /usr/local/bin/configure-collabora.sh"
+    depends_on:
+      nextcloud-aio-mastercontainer:
+        condition: service_started
     networks:
       - home-server
   collabora-code:
