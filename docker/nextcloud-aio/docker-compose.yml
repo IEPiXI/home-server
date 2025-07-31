@@ -1,77 +1,77 @@
 # docker/nextcloud-aio/docker-compose.yml
 services:
-  nextcloud-aio-mastercontainer:
-    image: ghcr.io/nextcloud-releases/all-in-one:latest
-    container_name: nextcloud-aio-mastercontainer
-    restart: always
-    ports:
-      - "8080:8080"
-    environment:
-      - SKIP_DOMAIN_VALIDATION=true
-      - APACHE_PORT=11000
-      - APACHE_IP_BINDING=0.0.0.0
-      - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1 --keep-monthly=1
-      - NEXTCLOUD_DATADIR=${DATA_DIR}/nextcloud
-      - NEXTCLOUD_KEEP_DISABLED_APPS=true
-      - START_CONTAINERS=1
-    volumes:
-      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - home-server
-  collabora-configurator:
-    image: docker:20.10
-    container_name: collabora-configurator
-    restart: "no"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./configure-collabora.sh:/usr/local/bin/configure-collabora.sh:ro
-    env_file:
-      - .env
-    command: "sh /usr/local/bin/configure-collabora.sh"
-    depends_on:
-      nextcloud-aio-mastercontainer:
-        condition: service_started
-    networks:
-      - home-server
-  collabora-code:
-    image: collabora/code:latest
-    container_name: collabora-code
-    restart: unless-stopped
-    networks:
-      - home-server
-      - nextcloud-aio
-    environment:
-      - 'domain=nextcloud.${DOMAIN}'
-      - 'dictionaries=en_US en_GB de_DE'
-      - 'extra_params=--o:ssl.enable=false --o:ssl.termination=true --o:server_name=office.${DOMAIN}'
-    cap_add:
-      - MKNOD
-  nextcloud-backup:
-    image: alpine:latest
-    container_name: nextcloud-backup
-    restart: unless-stopped
-    env_file:
-      - .env
-    volumes:
-      - ${BACKUP_DIR}/nextcloud:/backups/source
-      - ./rclone.conf:/config/rclone/rclone.conf:ro
-      - ./backup.sh:/usr/local/bin/backup.sh:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./.env:/app/.env:ro
-    command: >
-      sh -c "apk add --no-cache rclone zip cronie docker-cli &&
-           echo '0 6 * * * /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1' > /var/spool/cron/crontabs/root &&
-           crond -f"
-    networks:
-      - home-server
+    nextcloud-aio-mastercontainer:
+        image: ghcr.io/nextcloud-releases/all-in-one:latest
+        container_name: nextcloud-aio-mastercontainer
+        restart: always
+        ports:
+            - "8080:8080"
+        environment:
+            - SKIP_DOMAIN_VALIDATION=true
+            - APACHE_PORT=11000
+            - APACHE_IP_BINDING=0.0.0.0
+            - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1 --keep-monthly=1
+            - NEXTCLOUD_DATADIR=${DATA_DIR}/nextcloud
+            - NEXTCLOUD_KEEP_DISABLED_APPS=true
+            - START_CONTAINERS=1
+        volumes:
+            - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        networks:
+            - home-server
+    collabora-configurator:
+        image: docker:20.10
+        container_name: collabora-configurator
+        restart: "no"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./configure-collabora.sh:/usr/local/bin/configure-collabora.sh:ro
+        env_file:
+            - .env
+        command: "sh /usr/local/bin/configure-collabora.sh"
+        depends_on:
+            nextcloud-aio-mastercontainer:
+                condition: service_started
+        networks:
+            - home-server
+    collabora-code:
+        image: collabora/code:24.04.12.1.1
+        container_name: collabora-code
+        restart: unless-stopped
+        networks:
+            - home-server
+            - nextcloud-aio
+        environment:
+            - "domain=nextcloud.${DOMAIN}"
+            - "dictionaries=en_US en_GB de_DE"
+            - "extra_params=--o:ssl.enable=false --o:ssl.termination=true --o:server_name=office.${DOMAIN} --o:home_mode.enable=true"
+        cap_add:
+            - MKNOD
+    nextcloud-backup:
+        image: alpine:latest
+        container_name: nextcloud-backup
+        restart: unless-stopped
+        env_file:
+            - .env
+        volumes:
+            - ${BACKUP_DIR}/nextcloud:/backups/source
+            - ./rclone.conf:/config/rclone/rclone.conf:ro
+            - ./backup.sh:/usr/local/bin/backup.sh:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./.env:/app/.env:ro
+        command: >
+            sh -c "apk add --no-cache rclone zip cronie docker-cli &&
+                 echo '0 6 * * * /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1' > /var/spool/cron/crontabs/root &&
+                 crond -f"
+        networks:
+            - home-server
 
 volumes:
-  nextcloud_aio_mastercontainer:
-    name: nextcloud_aio_mastercontainer
+    nextcloud_aio_mastercontainer:
+        name: nextcloud_aio_mastercontainer
 
 networks:
-  home-server:
-    external: true
-  nextcloud-aio:
-    external: true
+    home-server:
+        external: true
+    nextcloud-aio:
+        external: true
