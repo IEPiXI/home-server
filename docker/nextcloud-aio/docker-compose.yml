@@ -10,7 +10,7 @@ services:
             - SKIP_DOMAIN_VALIDATION=true
             - APACHE_PORT=11000
             - APACHE_IP_BINDING=0.0.0.0
-            - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1 --keep-monthly=1
+            - BORG_RETENTION_POLICY=--keep-within=1d --keep-weekly=1
             - NEXTCLOUD_DATADIR=${DATA_DIR}/nextcloud
             - NEXTCLOUD_KEEP_DISABLED_APPS=true
             - START_CONTAINERS=1
@@ -61,7 +61,7 @@ services:
             - ./.env:/app/.env:ro
         command: >
             sh -c "apk add --no-cache rclone zip cronie docker-cli &&
-                 echo '0 6 * * * /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1' > /var/spool/cron/crontabs/root &&
+                 echo '0 6 */2 * * /usr/local/bin/backup.sh >> /var/log/cron.log 2>&1' > /var/spool/cron/crontabs/root &&
                  crond -f"
         networks:
             - home-server
