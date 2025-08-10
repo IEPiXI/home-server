@@ -1,6 +1,6 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
@@ -12,7 +12,7 @@ RUN apk add --no-cache bash
 
 RUN npm install -g ring-client-api@11.7.1
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN npm install --omit=dev
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/get_ring_token.sh .
