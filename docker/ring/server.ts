@@ -44,15 +44,15 @@ class RingServer {
             return;
         }
         this.isInitializing = true;
+        console.log("🔍 Initializing Ring connection...");
 
         try {
-            console.log("🔍 Attempting to load configuration and connect to Ring...");
             this.loadAndValidateConfig();
             await this.initializeRingConnection();
+            await this.stopFileWatcher();
         } catch (error: any) {
-            console.warn(`❌ Initial setup failed: ${error.message}`);
+            console.warn(`❌ Initialization failed: ${error.message}`);
             if (!this.intercom) {
-                console.log(`[File Watcher] Watching for changes to: ${ENV_PATH}`);
                 this.watchEnvFile();
             }
         } finally {
@@ -62,6 +62,7 @@ class RingServer {
 
     private loadAndValidateConfig(): void {
         dotenv.config({ path: ENV_PATH, override: true });
+
         const requiredEnvVars = ["RING_REFRESH_TOKEN", "UNLOCK_PASSWORD", "LOCATION_NAME", "INTERCOM_NAME"];
         const missingVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
         if (missingVars.length > 0) {
@@ -96,42 +97,43 @@ class RingServer {
             if (!location) {
                 throw new Error(`Location with name "${this.config.locationName}" not found.`);
             }
+
             this.intercom = location.intercoms.find((intercom) => intercom.name === this.config!.intercomName);
             if (!this.intercom) {
                 throw new Error(
                     `Intercom "${this.config.intercomName}" not found in location "${this.config.locationName}".`
                 );
             }
+
             console.log(`✅ Successfully connected to Intercom: ${this.intercom.name}`);
-            if (this.watcher) {
-                console.log("[File Watcher] Connection successful. Stopping file watcher.");
-                await this.watcher.close();
-                this.watcher = undefined;
-            }
         } catch (error: any) {
             this.intercom = undefined;
-            console.error("❌ Failed to connect to Ring API:", error.message);
             if (error.message.includes("Refresh token is not valid")) {
-                console.error("The stored refresh token is invalid. Please generate a new one.");
+                error.message =
+                    "The stored refresh token is invalid or expired. Please generate a new one using the auth script.";
             }
-            throw error;
+            throw new Error(`Failed to connect to Ring API: ${error.message}`);
+        }
+    }
+
+    private async stopFileWatcher(): Promise<void> {
+        if (this.watcher) {
+            console.log("[File Watcher] Connection successful. Stopping file watcher.");
+            await this.watcher.close();
+            this.watcher = undefined;
         }
     }
 
     private watchEnvFile(): void {
         if (this.watcher) return;
-
+        console.log(`[File Watcher] Watching for changes to: ${ENV_PATH}`);
         this.watcher = chokidar.watch(ENV_PATH, { ignoreInitial: true, persistent: true });
-        this.watcher.on("add", this.handleEnvFileChange);
-        this.watcher.on("change", this.handleEnvFileChange);
+        this.watcher.on("add", this.handleEnvFileChange).on("change", this.handleEnvFileChange);
     }
 
     private handleEnvFileChange = (): void => {
         if (this.isInternalEnvUpdate) return;
-
-        if (this.debounceTimeout) {
-            clearTimeout(this.debounceTimeout);
-        }
+        if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
 
         this.debounceTimeout = setTimeout(async () => {
             console.log(`[File Watcher] Detected change in .env file. Re-initializing...`);
@@ -150,21 +152,21 @@ class RingServer {
 
         console.log("Token updated. Saving new refresh token to .env file...");
         try {
-            const currentConfig = await fs.readFile(ENV_PATH, "utf-8");
+            const currentEnv = await fs.readFile(ENV_PATH, "utf-8");
 
-            let updatedConfig: string;
-            if (currentConfig.includes(`RING_REFRESH_TOKEN=${oldRefreshToken}`)) {
-                updatedConfig = currentConfig.replace(
+            let updateEnv: string;
+            if (currentEnv.includes(`RING_REFRESH_TOKEN=${oldRefreshToken}`)) {
+                updateEnv = currentEnv.replace(
                     `RING_REFRESH_TOKEN=${oldRefreshToken}`,
                     `RING_REFRESH_TOKEN=${newRefreshToken}`
                 );
             } else {
-                updatedConfig = currentConfig + `\nRING_REFRESH_TOKEN=${newRefreshToken}`;
+                updateEnv = currentEnv + `\nRING_REFRESH_TOKEN=${newRefreshToken}`;
                 console.warn("Could not find old refresh token in .env, appending new one.");
             }
 
             this.isInternalEnvUpdate = true;
-            await fs.writeFile(ENV_PATH, updatedConfig);
+            await fs.writeFile(ENV_PATH, updateEnv);
             console.log("✅ New refresh token saved.");
 
             if (this.config) this.config.refreshToken = newRefreshToken;
@@ -179,10 +181,11 @@ class RingServer {
     };
 
     private authenticate = (req: Request, res: Response, next: NextFunction) => {
-        if (!this.config || req.headers["authorization"] !== `Bearer ${this.config.unlockPassword}`) {
-            return res.status(403).send("Forbidden: Incorrect or missing password");
+        const authHeader = req.headers["authorization"];
+        if (!this.config || authHeader !== `Bearer ${this.config.unlockPassword}`) {
+            return res.status(403).send("Forbidden: Incorrect or missing password.");
         }
-        return next();
+        next();
     };
 
     private setupRoutes(): void {
@@ -202,7 +205,7 @@ class RingServer {
                 message = "Failed to unlock intercom:\n   ";
                 if (error?.response?.statusCode === 422) {
                     message += "The device was unable to perform the action. Please check the ";
-                    message += "intercom's status (e.g. battery, network connection, etc.)";
+                    message += "intercom's status (e.g. battery, network connection, ...)";
                     console.error("❌ " + message);
                     return res.status(500).send(message);
                 } else {
@@ -210,7 +213,6 @@ class RingServer {
                     console.error("❌ " + message);
                     return res.status(500).send("Failed to unlock intercom due to an unexpected error.");
                 }
-                // ---------------------------------------------
             }
         });
     }
