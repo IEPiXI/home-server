@@ -1,0 +1,25 @@
+{
+  "name": "ring-intercom-server",
+  "version": "1.0.0",
+  "description": "A server to unlock a Ring Intercom via an API call.",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "ts-node server.ts",
+    "auth": "./get_ring_token.sh"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "ring-client-api": "^11.7.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

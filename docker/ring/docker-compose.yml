@@ -1,0 +1,15 @@
+services:
+    ring-server:
+        build: .
+        container_name: ring-server
+        restart: unless-stopped
+        networks:
+            - home-server
+        env_file:
+            - .env
+        volumes:
+            - .env:/app/.env
+
+networks:
+    home-server:
+        external: true

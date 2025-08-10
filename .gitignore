@@ -4,3 +4,4 @@ vw-data/
 *.conf
 .env
 .env.*
+node_modules

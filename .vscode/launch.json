@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Ring Server (Nested)",
+      "runtimeArgs": ["--loader", "ts-node/esm"],
+      "program": "${workspaceFolder}/docker/ring/server.ts",
+      "cwd": "${workspaceFolder}/docker/ring"
+    }
+  ]
+}
