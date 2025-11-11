@@ -31,7 +31,7 @@ services:
             - TZ=Europe/Berlin
         volumes:
             - ${DATA_DIR}/vaultwarden:/data/:ro
-            - ./rclone.conf:/config/rclone/rclone.conf:ro
+            - ./rclone.conf:/config/rclone/rclone.conf
             - /var/run/docker.sock:/var/run/docker.sock
 networks:
     home-server:

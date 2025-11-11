@@ -50,3 +50,28 @@ docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/dock
 # Stop containers
 docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StopContainers.php
 ```
+
+## Update Expired Rclone Token
+
+First stop the container:
+
+```
+docker compose down
+sudo systemctl restart docker
+
+```
+
+Then run the reconnect rclone command to update the token, by following the instructions after running:
+
+```
+docker run --rm -it \
+  -v "$(pwd):/config" \
+  rclone/rclone:latest \
+  config reconnect --config /config/rclone.conf OneDrive:
+```
+
+The restart the container:
+
+```
+docker compose up -d --force-recreate
+```

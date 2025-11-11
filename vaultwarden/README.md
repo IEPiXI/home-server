@@ -66,3 +66,13 @@ To restore your Vaultwarden instance from a backup, use the `restore-vaultwarden
     ```
 
 3. **Confirm**: The script will prompt for confirmation before stopping the container and replacing the data
+
+## Update Expired Rclone Token
+
+Check the REAMDME.md from nextloud-aio for further instructions, and copy the the updated rclone config.
+
+Being in the vaultwarden directory, run:
+
+```
+cp ../nextcloud-aio/rclone.conf ./rclone.conf
+```

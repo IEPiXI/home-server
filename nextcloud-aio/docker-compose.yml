@@ -55,7 +55,7 @@ services:
             - .env
         volumes:
             - ${BACKUP_DIR}/nextcloud:/backups/source
-            - ./rclone.conf:/config/rclone/rclone.conf:ro
+            - ./rclone.conf:/config/rclone/rclone.conf
             - ./backup.sh:/usr/local/bin/backup.sh:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - ./.env:/app/.env:ro

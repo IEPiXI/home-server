@@ -71,7 +71,9 @@ fi
 
 # Remove lockfile on success
 rm "$LOCKFILE"
-send_notification "Rclone Sync Successful" "Synchronised the backup repository successfully"
+
+# if you want activate success message -> can be annoying
+# send_notification "Rclone Sync Successful" "Synchronised the backup repository successfully"
 
 echo "Rclone sync successful!"
 echo "Sync job finished at $(date)"
