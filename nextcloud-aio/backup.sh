@@ -63,7 +63,7 @@ touch "$LOCKFILE"
 echo "Syncing $SOURCE_DIRECTORY/ to $RCLONE_CONFIG:$TARGET_DIRECTORY"
 
 # Execute rclone sync and check for failure
-if ! rclone sync --config /config/rclone/rclone.conf "$SOURCE_DIRECTORY/" "$RCLONE_CONFIG:$TARGET_DIRECTORY"; then
+if ! rclone copy --config /config/rclone/rclone.conf "$SOURCE_DIRECTORY/" "$RCLONE_CONFIG:$TARGET_DIRECTORY"; then
     send_notification "Rclone Sync Failed" "Failed to synchronise the backup repository"
     rm "$LOCKFILE"
     exit 1

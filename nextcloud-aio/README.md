@@ -51,6 +51,19 @@ docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/dock
 docker exec -it nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StopContainers.php
 ```
 
+## Useful OCC Commands
+
+```bash
+# Empty trash for all users
+docker exec nextcloud-aio-nextcloud php occ trashbin:cleanup --all-users
+
+# Rescan all files (after manual changes on disk)
+docker exec nextcloud-aio-nextcloud php occ files:scan --all
+
+# Set trashbin max retention to 30 days (prevents disk filling up from trash)
+docker exec nextcloud-aio-nextcloud php occ config:app:set files_trashbin trashbin_retention_obligation --value="auto, 30"
+```
+
 ## Update Expired Rclone Token
 
 First stop the container:
