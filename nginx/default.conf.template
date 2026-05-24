@@ -58,7 +58,7 @@ server {
     listen [::]:443 ssl;
     http2 on;
 
-    server_name vaultwarden.${DOMAIN};
+    server_name vaultwarden.${DOMAIN} vaultwarden.local.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
@@ -100,7 +100,7 @@ server {
     listen [::]:443 ssl;
     http2 on;
 
-    server_name nextcloud.${DOMAIN};
+    server_name nextcloud.${DOMAIN} nextcloud.local.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
@@ -154,7 +154,7 @@ server {
     listen 443 ssl;
     listen [::]:443 ssl;
     http2 on;
-    server_name office.${DOMAIN};
+    server_name office.${DOMAIN} office.local.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
@@ -209,7 +209,7 @@ server {
     listen [::]:443 ssl;
     http2 on;
 
-    server_name ring.${DOMAIN};
+    server_name ring.${DOMAIN} ring.local.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
@@ -240,7 +240,7 @@ server {
     listen [::]:443 ssl;
     http2 on;
 
-    server_name immich.${DOMAIN};
+    server_name immich.${DOMAIN} immich.local.${DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;

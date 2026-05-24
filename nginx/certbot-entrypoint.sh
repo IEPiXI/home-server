@@ -25,7 +25,7 @@ else
     --dns-cloudflare \
     --dns-cloudflare-credentials "$CLOUDFLARE_CREDS_FILE" \
     --email "$EMAIL" \
-    --domains "$DOMAIN_NAME,*.$DOMAIN_NAME"
+    --domains "$DOMAIN_NAME,*.$DOMAIN_NAME,*.local.$DOMAIN_NAME"
 fi
 
 echo "🔄 Starting Certbot renewal script..."
