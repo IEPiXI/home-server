@@ -20,6 +20,9 @@ echo ""
 ./nextcloud-aio/update.sh
 
 echo ""
+./immich/update.sh
+
+echo ""
 echo "======================================"
 echo "All services have been updated successfully!"
 echo "======================================"

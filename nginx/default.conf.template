@@ -224,3 +224,40 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+
+# ----------------- Immich Server ----------------- #
+
+upstream immich_server {
+    zone immich_server 64k;
+    server immich-server:2283 resolve;
+    keepalive 2;
+}
+
+# ----------------- Immich Server (HTTPS) ----------------- #
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+
+    server_name immich.${DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+
+    # Required for large photo/video uploads
+    client_max_body_size 0;
+    proxy_buffering off;
+    proxy_request_buffering off;
+    proxy_read_timeout 600s;
+
+    location / {
+        proxy_pass http://immich_server;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+}
