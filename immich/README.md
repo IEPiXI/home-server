@@ -1,23 +1,20 @@
 # Immich
 
-Self-hosted photo and video backup with automatic sync from iOS and macOS.
+Self-hosted photo and video backup with automatic sync from iOS, macOS, and DJI cameras.
 
 ## Setup
 
-You will need the following files in this directory:
+Copy `.env.example` to `.env` and fill in the values:
 
-- `.env` file:
+```bash
+cp .env.example .env
+```
 
-    ```
-    DATA_DIR=/home/data
+The `.env` file covers both the Docker stack and the upload scripts:
 
-    DB_HOSTNAME=immich-postgres
-    DB_USERNAME=immich
-    DB_PASSWORD=your_strong_password
-    DB_DATABASE_NAME=immich
-
-    REDIS_HOSTNAME=immich-redis
-    ```
+- `DB_PASSWORD` — change before first run
+- `IMMICH_DOMAIN` — your Immich URL
+- `IMMICH_API_KEY` — Immich web UI → Account Settings → API Keys
 
 Create the host directories before first start:
 
@@ -36,13 +33,50 @@ Open `https://immich.your-domain.net` and create your admin account.
 ## iOS / macOS sync
 
 - **iOS**: Install the [Immich app](https://apps.apple.com/app/immich/id1660895792) → Settings → Backup
-- **macOS**: Edit `immich-upload.sh` and set your domain and API key (Immich web UI → Account Settings → API Keys), then run:
+- **macOS**: Export photos via osxphotos to `~/Pictures/immich-export`, then upload:
 
     ```bash
-    ./immich-upload.sh
+    ./immich-upload.sh --apple
     ```
 
-    Uses [immich-go](https://github.com/simulot/immich-go) under the hood.
+## DJI cameras (Osmo Action, drone)
+
+1. Connect the camera via USB
+2. Export files to `~/Pictures/dji-immich-export/` organized by `YYYY/MM/` (skips already-copied files):
+
+    ```bash
+    ./dji-export.sh
+    ```
+
+3. Upload to Immich:
+
+    ```bash
+    ./immich-upload.sh --dji
+    ```
+
+DJI assets are tagged `camera/DJI` and grouped into the **DJI Osmo Action** album. Only DNG + MP4 are uploaded (JPG duplicates and LRF proxy videos are skipped).
+
+## Script reference
+
+### dji-export.sh
+
+Exports from connected DJI devices to a local folder. Paths can be overridden via flags or env vars:
+
+```bash
+./dji-export.sh [--dest /path] [--osmo-src /path] [--drone-src /path]
+
+# or via env vars
+DJI_EXPORT_DEST=~/Pictures/dji DJI_OSMO_SRC=/Volumes/OsmoAction/DCIM/DJI_001 ./dji-export.sh
+```
+
+### immich-upload.sh
+
+Uploads a local folder to Immich. Uses [immich-go](https://github.com/simulot/immich-go).
+
+```bash
+./immich-upload.sh --apple [--upload-path /path]   # default: ~/Pictures/immich-export
+./immich-upload.sh --dji   [--upload-path /path]   # default: ~/Pictures/dji-immich-export
+```
 
 ## Update
 
