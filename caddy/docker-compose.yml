@@ -1,0 +1,26 @@
+services:
+    caddy:
+        build: .
+        container_name: caddy-proxy
+        restart: unless-stopped
+        env_file:
+            - .env
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile:ro
+            - ${DATA_DIR}/caddy_data:/data
+            - ${DATA_DIR}/caddy_config:/config
+        networks:
+            home-server:
+                aliases:
+                    - "nextcloud.${DOMAIN}"
+                    - "office.${DOMAIN}"
+            nextcloud-aio:
+
+networks:
+    home-server:
+        external: true
+    nextcloud-aio:
+        external: true

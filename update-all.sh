@@ -8,7 +8,7 @@ echo "======================================"
 cd "$(dirname "$0")" || exit
 
 echo ""
-./nginx/update.sh
+./caddy/update.sh
 
 echo ""
 ./vaultwarden/update.sh
