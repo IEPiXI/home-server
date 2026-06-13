@@ -8,7 +8,10 @@ echo "Stopping containers..."
 docker exec nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StopContainers.php
 
 echo "Updating master container..."
-docker exec nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/UpdateMastercontainer.php
+docker exec nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/UpdateMastercontainer.php || true
+
+echo "Waiting for master container to restart (60s)..."
+sleep 60
 
 echo "Updating and starting containers..."
 docker exec nextcloud-aio-mastercontainer sudo -u www-data php /var/www/docker-aio/php/src/Cron/StartAndUpdateContainers.php
