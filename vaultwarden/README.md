@@ -1,28 +1,36 @@
-# How to use Vaultwarden with Rclone Back-Up
+# 🔐 Vaultwarden
 
-You will need the following files within this directory, in order to run the **vaultwarden** container (see [Github-Repo](https://github.com/dani-garcia/vaultwarden)) and the **vaultwarden-backup** container (see [Github-Repo](https://github.com/ttionya/vaultwarden-backup/tree/master)):
+Bitwarden-compatible password manager server ([GitHub](https://github.com/dani-garcia/vaultwarden)) with automated Rclone backups ([GitHub](https://github.com/ttionya/vaultwarden-backup/tree/master)).
 
--   `.env` file:
+## ⚙️ Setup
 
-    ```
-    # mainly for the vaultwarden container
-    DOMAIN=https://vaultwarden.your-domain.net
-    DATA_DIR=/home/data
-    ADMIN_TOKEN='$argon2id$v=19$m=65540,t=3,p=4$+......'
+Copy `.env.example` to `.env` and fill in the values:
 
-    # mainly for the vaultwarden-backup container using rclone
-    RCLONE_REMOTE_NAME=NAME_OF_RCLONE_BACKUP
-    RCLONE_REMOTE_DIR=/backup/vaultwarden
-    ZIP_PASSWORD=YourSecretPassword
-    ```
+```bash
+cp .env.example .env
+```
 
-    In order to get a strong `ADMIN_TOKEN`, run the following and follow its instruction:
+The `.env` file requires the following configuration:
+
+**Vaultwarden Settings:**
+
+- `DOMAIN` — your FULL Vaultwarden URL (e.g., https://vaultwarden.yourdomain.com)
+- `DATA_DIR` — directory on the host to securely store the vault database
+- `ADMIN_TOKEN` — secure token to access the `/admin` diagnostic panel
+
+**Backup Settings:**
+
+- `RCLONE_REMOTE_NAME` — name of the Rclone remote defined in your `rclone.conf`
+- `RCLONE_REMOTE_DIR` — directory on the cloud remote to store backups
+- `ZIP_PASSWORD` — secure password used to encrypt the backup archives
+
+To generate a strong `ADMIN_TOKEN`, run the following command and follow the instructions:
 
     ```
     docker run --rm -it vaultwarden/server:latest vaultwarden hash
     ```
 
--   `rclone.conf` file:
+- `rclone.conf` file:
 
     ```
     [NAME_OF_RCLONE_BACKUP]

@@ -1,22 +1,21 @@
-# Ring Intercom Unlock Server
+# 🔔 Ring Intercom Unlock Server
 
-You will need the following file within this directory to run the `ring-server` container:
+A server to control Ring Intercom devices and expose an unlock endpoint.
 
--   `.env` file:
+## ⚙️ Setup
 
-    ```
-    # A secure password of your choice to protect the /unlock endpoint
-    UNLOCK_PASSWORD=your-strong-password
+Copy `.env.example` to `.env` and fill in the values:
 
-    # The name of your Location in the Ring app (e.g., "Home")
-    LOCATION_NAME=Home
+```bash
+cp .env.example .env
+```
 
-    # The name of your Intercom device in the Ring app (e.g., "Front Door")
-    INTERCOM_NAME=Intercom
+The `.env` file requires the following variables:
 
-    # The refresh token from Ring (will be created by the auth script, can also be set manually)
-    # RING_REFRESH_TOKEN=
-    ```
+- `UNLOCK_PASSWORD` — a secure password of your choice to protect the /unlock endpoint
+- `LOCATION_NAME` — the name of your Location in the Ring app (e.g., "Home")
+- `INTERCOM_NAME` — the name of your Intercom device in the Ring app (e.g., "Front Door")
+- `RING_REFRESH_TOKEN` — the refresh token from Ring (leave blank initially)
 
 To get the `RING_REFRESH_TOKEN`, first fill in the other variables, then run the interactive authentication script which will update this file for you:
 

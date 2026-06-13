@@ -1,21 +1,27 @@
-# How to use Nextcloud and Collabora with Rclone Back-Up
+# ☁️ Nextcloud AIO
 
-You will need the following files within this directory, in order to run the **Nextcloud-AIO** master container (see [Github-Repo](https://github.com/nextcloud/all-in-one)), the **Collabora** container (see [Github-Repo](https://github.com/CollaboraOnline/online/tree/master/docker)), and the **nextcloud-backup** container:
+Nextcloud All-in-One master container ([GitHub](https://github.com/nextcloud/all-in-one)) with Collabora ([GitHub](https://github.com/CollaboraOnline/online/tree/master/docker)) and Rclone backup.
 
--   `.env` file:
+## ⚙️ Setup
 
-    ```
-    # mainly for the nextcloud-aio master container
-    DOMAIN=your-domain.net
-    DATA_DIR=/home/data
-    BACKUP_DIR=/home/backup
+Copy `.env.example` to `.env` and fill in the values:
 
-    # mainly for the nextcloud-backup container
-    RCLONE_REMOTE_NAME=NAME_OF_RCLONE_BACKUP
-    RCLONE_REMOTE_DIR=/backup/nextcloud
-    ```
+```bash
+cp .env.example .env
+```
 
--   `rclone.conf` file:
+The `.env` file requires the following configuration:
+
+**Nextcloud Settings:**
+- `DOMAIN` — your root domain (e.g., yourdomain.com)
+- `DATA_DIR` — directory on the host to securely store all Nextcloud data and databases
+
+**Backup Settings:**
+- `BACKUP_DIR` — directory on the host for local Nextcloud AIO backups
+- `RCLONE_REMOTE_NAME` — name of the Rclone remote defined in your `rclone.conf`
+- `RCLONE_REMOTE_DIR` — directory on the cloud remote to store backups
+
+You will also need an `rclone.conf` file:
 
     ```
     [NAME_OF_RCLONE_BACKUP]

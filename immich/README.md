@@ -1,8 +1,8 @@
-# Immich
+# 📷 Immich
 
 Self-hosted photo and video backup with automatic sync from iOS, macOS, and DJI cameras.
 
-## Setup
+## ⚙️ Setup
 
 Copy `.env.example` to `.env` and fill in the values:
 
@@ -10,9 +10,15 @@ Copy `.env.example` to `.env` and fill in the values:
 cp .env.example .env
 ```
 
-The `.env` file covers both the Docker stack and the upload scripts:
+The `.env` file requires the following for the Docker stack:
 
-- `DB_PASSWORD` — change before first run
+- `DATA_DIR` — directory on the host where Immich will store all data and databases
+- `DB_PASSWORD` — change before first run (secure password for Postgres)
+- `DB_HOSTNAME`, `DB_USERNAME`, `DB_DATABASE_NAME` — Postgres connection details (defaults are fine)
+- `REDIS_HOSTNAME` — Redis connection hostname (default is fine)
+
+Optionally, if you plan to use the upload scripts, you must also provide:
+
 - `IMMICH_DOMAIN` — your Immich URL
 - `IMMICH_API_KEY` — Immich web UI → Account Settings → API Keys
 
