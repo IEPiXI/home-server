@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "Updating NGINX..."
+echo "Updating Caddy..."
 cd "$(dirname "$0")" || exit
 
 docker compose pull
 docker compose up -d
 docker image prune -f
 
-echo "NGINX update complete."
+echo "Caddy update complete."
