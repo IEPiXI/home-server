@@ -1,0 +1,15 @@
+background:
+  image: "https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/blossom_valley.jpg"
+  opacity: 50
+  brightness: 50
+  blur: sm
+
+theme: dark
+
+layout:
+  Monitoring:
+    style: row
+    columns: 1
+  Home Server:
+    style: row
+    columns: 3

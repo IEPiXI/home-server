@@ -1,0 +1,30 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    volumes:
+      - ./uptime-kuma-data:/app/data
+    restart: unless-stopped
+    networks:
+      - home-server
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    env_file:
+      - .env
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=*
+      - HOMEPAGE_VAR_DOMAIN=${DOMAIN}
+      - HOMEPAGE_VAR_IMMICH_API_KEY=${IMMICH_API_KEY}
+    volumes:
+      - ./homepage-config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro # allows homepage to see docker status
+      - /:/hostfs:ro # allows homepage to read the host machine's actual disk space
+    restart: unless-stopped
+    networks:
+      - home-server
+
+networks:
+  home-server:
+    external: true

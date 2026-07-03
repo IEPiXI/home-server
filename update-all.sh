@@ -16,11 +16,15 @@ echo ""
 echo ""
 ./ring/update.sh
 
-echo ""
-./nextcloud-aio/update.sh
 
 echo ""
 ./immich/update.sh
+
+echo ""
+./monitoring/update.sh
+
+echo ""
+./nextcloud-aio/update.sh
 
 echo ""
 echo "======================================"

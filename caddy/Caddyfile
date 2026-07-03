@@ -2,6 +2,11 @@
     email {$ACME_EMAIL}
 }
 
+# internal health check endpoint for monitoring services
+http://caddy-proxy:80, http://localhost:80 {
+    respond "OK" 200
+}
+
 *.{$DOMAIN} {
     tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
@@ -44,4 +49,12 @@ ring.{$DOMAIN} {
 
 immich.{$DOMAIN} {
     reverse_proxy immich-server:2283
+}
+
+status.{$DOMAIN} {
+    reverse_proxy uptime-kuma:3001
+}
+
+home.{$DOMAIN} {
+    reverse_proxy homepage:3000
 }
