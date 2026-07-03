@@ -189,6 +189,14 @@ class RingServer {
     };
 
     private setupRoutes(): void {
+        // health check endpoint for monitoring (homepage / uptime kuma)
+        this.app.get("/", (req: Request, res: Response) => {
+            if (!this.intercom) {
+                return res.status(503).send("Service Unavailable: Ring Intercom is not ready");
+            }
+            return res.status(200).send("OK: Ring Intercom is connected");
+        });
+
         this.app.get("/unlock", this.authenticate, async (req: Request, res: Response) => {
             var message;
             if (!this.intercom) {

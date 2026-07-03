@@ -1,0 +1,23 @@
+- greeting:
+    text_size: xl
+
+- search:
+    provider: google
+    target: _blank
+
+- openmeteo:
+    label: ""
+    latitude: 50.8333
+    longitude: 10.9500
+    timezone: auto
+    units: metric
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /hostfs

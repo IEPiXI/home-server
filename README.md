@@ -9,6 +9,7 @@ This repository contains the configuration and docker-compose files for my home 
 * **[🔔 Ring Intercom Unlock Server](./ring/README.md)**: A server to control Ring Intercom devices.
 * **[🔐 Vaultwarden](./vaultwarden/README.md)**: Bitwarden-compatible password manager server with Rclone backups.
 * **[📷 Immich](./immich/README.md)**: Self-hosted photo and video backup with iOS and macOS sync.
+* **[📊 Monitoring](./monitoring/README.md)**: Homepage visual dashboard and Uptime Kuma for service monitoring.
 
 ## ⚙️ Management
 
@@ -31,3 +32,4 @@ Please refer to the `README.md` within each service directory for specific setup
 - [🔔 Ring Server Instructions](./ring/README.md)
 - [🔐 Vaultwarden Instructions](./vaultwarden/README.md)
 - [📷 Immich Instructions](./immich/README.md)
+- [📊 Monitoring Instructions](./monitoring/README.md)
