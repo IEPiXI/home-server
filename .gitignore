@@ -7,3 +7,17 @@ vw-data/
 node_modules
 caddy_data/
 caddy_config/
+
+# AdGuard Runtime
+adguard/conf/AdGuardHome.yaml
+adguard/work/
+
+# Uptime Kuma Runtime
+monitoring/uptime-kuma-data/
+
+# Homepage Auto-generated Defaults
+monitoring/homepage-config/logs/
+monitoring/homepage-config/custom.css
+monitoring/homepage-config/custom.js
+monitoring/homepage-config/kubernetes.yaml
+monitoring/homepage-config/proxmox.yaml
