@@ -8,6 +8,9 @@ echo "======================================"
 cd "$(dirname "$0")" || exit
 
 echo ""
+./adguard/update.sh
+
+echo ""
 ./caddy/update.sh
 
 echo ""
