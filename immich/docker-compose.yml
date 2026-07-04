@@ -3,6 +3,18 @@ services:
         image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
         container_name: immich-server
         restart: unless-stopped
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=80
+            - homepage.name=Immich
+            - homepage.icon=immich
+            - homepage.href=https://immich.{{HOMEPAGE_VAR_DOMAIN}}
+            - homepage.description=Photo & Video Backup
+            - homepage.siteMonitor=http://immich-server:2283
+            - homepage.widget.type=immich
+            - homepage.widget.url=http://immich-server:2283
+            - homepage.widget.key={{HOMEPAGE_VAR_IMMICH_API_KEY}}
+            - homepage.widget.version=2
         env_file: .env
         volumes:
             - ${DATA_DIR}/immich/library:/usr/src/app/upload

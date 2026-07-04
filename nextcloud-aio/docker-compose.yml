@@ -4,6 +4,14 @@ services:
         image: ghcr.io/nextcloud-releases/all-in-one:latest
         container_name: nextcloud-aio-mastercontainer
         restart: always
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=20
+            - homepage.name=Nextcloud
+            - homepage.icon=nextcloud
+            - homepage.href=https://nextcloud.{{HOMEPAGE_VAR_DOMAIN}}
+            - homepage.description=Cloud Storage & Sync
+            - homepage.siteMonitor=https://nextcloud.{{HOMEPAGE_VAR_DOMAIN}}
         ports:
             - "8080:8080"
         environment:

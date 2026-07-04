@@ -3,6 +3,14 @@ services:
         image: vaultwarden/server:latest
         container_name: vaultwarden
         restart: unless-stopped
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=30
+            - homepage.name=Vaultwarden
+            - homepage.icon=vaultwarden
+            - homepage.href=https://vaultwarden.{{HOMEPAGE_VAR_DOMAIN}}
+            - homepage.description=Password Manager
+            - homepage.siteMonitor=http://vaultwarden:80
         env_file:
             - .env
         environment:

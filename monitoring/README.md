@@ -42,7 +42,7 @@ To integrate the statistics into the Homepage dashboard widget:
 1. Click **Status Pages** at the top right of Uptime Kuma.
 2. Click **New Status Page**.
 3. **Name**: Whatever you like (e.g., `Home Server Status`).
-4. **Slug**: `uptime` (this must exactly match the slug in `homepage-config/services.yaml`).
+4. **Slug**: `uptime` (this must exactly match the `homepage.widget.slug` label in `docker-compose.yml`).
 5. Scroll down to the **Monitors** section and add all the monitors you just created.
 6. Click **Save**.
 

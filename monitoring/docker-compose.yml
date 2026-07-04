@@ -2,6 +2,15 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:2
     container_name: uptime-kuma
+    labels:
+      - homepage.group=Monitoring
+      - homepage.name=Uptime Kuma
+      - homepage.icon=uptime-kuma
+      - homepage.href=https://status.{{HOMEPAGE_VAR_DOMAIN}}
+      - homepage.description=Monitoring & Alerts
+      - homepage.widget.type=uptimekuma
+      - homepage.widget.url=http://uptime-kuma:3001
+      - homepage.widget.slug=uptime
     volumes:
       - ./uptime-kuma-data:/app/data
     restart: unless-stopped
@@ -11,6 +20,13 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
+    labels:
+      - homepage.group=Home Server
+      - homepage.weight=10
+      - homepage.name=Homepage
+      - homepage.icon=homepage
+      - homepage.href=https://home.{{HOMEPAGE_VAR_DOMAIN}}
+      - homepage.description=Dashboard
     env_file:
       - .env
     environment:
