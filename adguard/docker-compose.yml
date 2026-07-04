@@ -8,7 +8,7 @@ services:
       - homepage.weight=40
       - homepage.name=AdGuard
       - homepage.icon=sh-adguard-home
-      - homepage.href=https://adguard.{{HOMEPAGE_VAR_DOMAIN}}
+      - homepage.href=https://adg.{{HOMEPAGE_VAR_DOMAIN}}
       - homepage.description=Local DNS Server
       - homepage.siteMonitor=http://adguardhome:3000
     ports:

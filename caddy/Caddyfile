@@ -59,6 +59,6 @@ home.{$DOMAIN} {
     reverse_proxy homepage:3000
 }
 
-adguard.{$DOMAIN} {
+adg.{$DOMAIN} {
     reverse_proxy adguardhome:3000
 }
