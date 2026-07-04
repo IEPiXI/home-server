@@ -1,0 +1,28 @@
+http:
+  address: 0.0.0.0:3000
+  session_ttl: 720h
+users:
+  - name: admin
+    password: "${ADMIN_PASSWORD_HASH}"
+dns:
+  bind_hosts:
+    - 0.0.0.0
+  port: 53
+  trusted_proxies:
+    - 127.0.0.0/8
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 100.64.0.0/10
+  rewrites:
+    - domain: '*.${DOMAIN}'
+      answer: ${LAN_IP}
+filters:
+  - enabled: true
+    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
+    name: AdGuard DNS filter
+    id: 1
+  - enabled: true
+    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
+    name: AdAway Default Blocklist
+    id: 2

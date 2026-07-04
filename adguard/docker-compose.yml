@@ -1,0 +1,25 @@
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    restart: unless-stopped
+    ports:
+      # DNS ports
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Web interface
+      - "3000:3000/tcp"
+      # AdGuard Home specific ports
+      - "853:853/tcp"
+      - "853:853/udp"
+      - "5443:5443/tcp"
+      - "5443:5443/udp"
+    volumes:
+      - ./work:/opt/adguardhome/work
+      - ./conf:/opt/adguardhome/conf
+    networks:
+      - home-server
+
+networks:
+  home-server:
+    external: true
