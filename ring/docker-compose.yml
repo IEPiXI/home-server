@@ -3,6 +3,14 @@ services:
         build: .
         container_name: ring-server
         restart: unless-stopped
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=50
+            - homepage.name=Ring Intercom
+            - homepage.icon=mdi-doorbell
+            - homepage.href=https://ring.{{HOMEPAGE_VAR_DOMAIN}}
+            - homepage.description=Ring Intercom Server
+            - homepage.siteMonitor=http://ring-server:3000
         networks:
             - home-server
         env_file:

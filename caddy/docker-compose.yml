@@ -3,6 +3,14 @@ services:
         build: .
         container_name: caddy-proxy
         restart: unless-stopped
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=70
+            - homepage.name=Caddy
+            - homepage.icon=caddy
+            - homepage.href=http://localhost:80
+            - homepage.description=Reverse Proxy
+            - homepage.siteMonitor=http://caddy-proxy:80
         env_file:
             - .env
         ports:

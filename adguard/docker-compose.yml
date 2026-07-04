@@ -3,6 +3,14 @@ services:
     image: adguard/adguardhome
     container_name: adguardhome
     restart: unless-stopped
+    labels:
+      - homepage.group=Home Server
+      - homepage.weight=40
+      - homepage.name=AdGuard
+      - homepage.icon=sh-adguard-home
+      - homepage.href=https://adguard.{{HOMEPAGE_VAR_DOMAIN}}
+      - homepage.description=Local DNS Server
+      - homepage.siteMonitor=http://adguardhome:3000
     ports:
       # DNS ports
       - "53:53/tcp"
