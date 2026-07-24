@@ -19,7 +19,6 @@ echo ""
 echo ""
 ./ring/update.sh
 
-
 echo ""
 ./immich/update.sh
 
@@ -28,6 +27,9 @@ echo ""
 
 echo ""
 ./nextcloud-aio/update.sh
+
+echo ""
+./home-assistant/update.sh
 
 echo ""
 echo "======================================"

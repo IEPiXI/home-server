@@ -1,0 +1,29 @@
+services:
+    home-assistant:
+        container_name: home-assistant
+        image: "ghcr.io/home-assistant/home-assistant:stable"
+        volumes:
+            - ./config:/config
+            - /etc/localtime:/etc/localtime:ro
+            - /run/dbus:/run/dbus:ro
+        restart: unless-stopped
+        privileged: true
+        network_mode: host
+        labels:
+            - homepage.group=Home Server
+            - homepage.weight=100
+            - homepage.name=Power Dashboard
+            - homepage.description=Shelly Power Usage
+            - homepage.icon=home-assistant
+            - homepage.href=http://${HOME_ASSISTANT_SERVER_IP}:8123/${HOME_ASSISTANT_DASHBOARD_PATH}
+            - homepage.widget.type=homeassistant
+            - homepage.widget.url=http://${HOME_ASSISTANT_SERVER_IP}:8123
+            - homepage.widget.key=${HOME_ASSISTANT_TOKEN}
+            - homepage.widget.custom[0].label=Power
+            - homepage.widget.custom[0].state=${HOME_ASSISTANT_SHELLY_POWER}
+            - homepage.widget.custom[1].label=Energy
+            - homepage.widget.custom[1].state=${HOME_ASSISTANT_SHELLY_ENERGY}
+            - homepage.widget.custom[2].label=Voltage
+            - homepage.widget.custom[2].state=${HOME_ASSISTANT_SHELLY_VOLTAGE}
+            - homepage.widget.custom[3].label=Current
+            - homepage.widget.custom[3].state=${HOME_ASSISTANT_SHELLY_CURRENT}
