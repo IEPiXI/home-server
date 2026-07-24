@@ -11,6 +11,7 @@ This repository contains the configuration and docker-compose files for my home 
 - **[📷 Immich](./immich/README.md)**: Self-hosted photo and video backup with iOS and macOS sync.
 - **[📊 Monitoring](./monitoring/README.md)**: Homepage visual dashboard and Uptime Kuma for service monitoring.
 - **[🛡️ AdGuard](./adguard/README.md)**: Local DNS server for domain resolution and network-wide ad blocking.
+- **[🏡 Home Assistant](./home-assistant/README.md)**: Smart home hub with Shelly plug integration and live power monitoring.
 
 ## ⚙️ Management
 
@@ -35,3 +36,4 @@ Please refer to the `README.md` within each service directory for specific setup
 - [📷 Immich Instructions](./immich/README.md)
 - [📊 Monitoring Instructions](./monitoring/README.md)
 - [🛡️ AdGuard Instructions](./adguard/README.md)
+- [🏡 Home Assistant Instructions](./home-assistant/README.md)
