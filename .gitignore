@@ -21,3 +21,7 @@ monitoring/homepage-config/custom.css
 monitoring/homepage-config/custom.js
 monitoring/homepage-config/kubernetes.yaml
 monitoring/homepage-config/proxmox.yaml
+
+# Home Assistant Runtime
+home-assistant/config/
+

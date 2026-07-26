@@ -18,7 +18,6 @@ These metrics are then securely passed to the central **Homepage Dashboard** via
     ```
 
     Edit `.env` and fill in your details:
-    - `HOME_ASSISTANT_SERVER_IP`: The local IP of this server (e.g., `192.168.178.152`).
     - `HOME_ASSISTANT_TOKEN`: A Long-Lived Access Token generated from your Home Assistant user profile.
     - `HOME_ASSISTANT_SHELLY_*`: The exact Entity IDs of your Shelly sensors found in Home Assistant (e.g., `sensor.homeserver_power`).
 
@@ -29,4 +28,4 @@ These metrics are then securely passed to the central **Homepage Dashboard** via
     ```
 
 3. **🎉 Success!**
-   You can log into your Home Assistant dashboard at `http://<SERVER_IP>:8123` to complete the initial setup, create an admin account, and configure your discovered Shelly plug.
+   You can now log into your Home Assistant dashboard at `https://home-assist.<YOUR_DOMAIN>` (or `http://<SERVER_IP>:8123`).
