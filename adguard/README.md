@@ -18,7 +18,7 @@ To make the installation as seamless as possible, an automated setup script is p
 
     Edit `.env` and fill in your details:
     - `DOMAIN`: Your actual domain (e.g. `yourdomain.com`).
-    - `LAN_IP`: The local IP of this server (e.g. `192.168.178.50`).
+    - `LAN_IP`: The local IP of this server (set to `auto` or leave blank to auto-detect).
     - `ADMIN_PASSWORD`: Your desired admin dashboard password.
 
 2. **🚀 Run Setup Script:**

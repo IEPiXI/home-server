@@ -38,6 +38,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # allows homepage to see docker status
       - /:/hostfs:ro # allows homepage to read the host machine's actual disk space
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - home-server
 

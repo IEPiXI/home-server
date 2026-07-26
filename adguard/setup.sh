@@ -18,6 +18,16 @@ fi
 # Source the .env file
 source .env
 
+# Auto-detect LAN IP if unset or set to 'auto'
+if [ -z "$LAN_IP" ] || [ "$LAN_IP" = "auto" ]; then
+    echo "  -> Auto-detecting server LAN IP address..."
+    LAN_IP=$(ip -4 route get 1.1.1.1 2>/dev/null | awk '{print $7}')
+    if [ -z "$LAN_IP" ]; then
+        LAN_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+    fi
+    echo "  -> Detected LAN IP: $LAN_IP"
+fi
+
 # fix systemd-resolved (requires sudo)
 echo "[1/4] Checking and freeing port 53 (systemd-resolved)..."
 if systemctl is-active --quiet systemd-resolved; then
@@ -52,9 +62,9 @@ echo "[3/4] Generating configuration file..."
 sudo mkdir -p conf
 sudo chown -R "$USER":"$USER" conf
 sed -e "s/\${ADMIN_PASSWORD_HASH}/$ESCAPED_HASH/g" \
-    -e "s/\${DOMAIN}/$DOMAIN/g" \
-    -e "s/\${LAN_IP}/$LAN_IP/g" \
-    conf/AdGuardHome.yaml.example > conf/AdGuardHome.yaml
+-e "s/\${DOMAIN}/$DOMAIN/g" \
+-e "s/\${LAN_IP}/$LAN_IP/g" \
+conf/AdGuardHome.yaml.example > conf/AdGuardHome.yaml
 
 echo "  -> conf/AdGuardHome.yaml generated successfully."
 

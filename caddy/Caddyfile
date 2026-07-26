@@ -59,6 +59,10 @@ home.{$DOMAIN} {
     reverse_proxy homepage:3000
 }
 
+home-assist.{$DOMAIN} {
+    reverse_proxy host.docker.internal:8123
+}
+
 adg.{$DOMAIN} {
     reverse_proxy adguardhome:3000
 }

@@ -1,7 +1,7 @@
 services:
     home-assistant:
+        build: .
         container_name: home-assistant
-        image: "ghcr.io/home-assistant/home-assistant:stable"
         volumes:
             - ./config:/config
             - /etc/localtime:/etc/localtime:ro
@@ -15,9 +15,9 @@ services:
             - homepage.name=Power Dashboard
             - homepage.description=Shelly Power Usage
             - homepage.icon=home-assistant
-            - homepage.href=http://${HOME_ASSISTANT_SERVER_IP}:8123/${HOME_ASSISTANT_DASHBOARD_PATH}
+            - homepage.href=https://home-assist.{{HOMEPAGE_VAR_DOMAIN}}/${HOME_ASSISTANT_DASHBOARD_PATH}
             - homepage.widget.type=homeassistant
-            - homepage.widget.url=http://${HOME_ASSISTANT_SERVER_IP}:8123
+            - homepage.widget.url=http://host.docker.internal:8123
             - homepage.widget.key=${HOME_ASSISTANT_TOKEN}
             - homepage.widget.custom[0].label=Power
             - homepage.widget.custom[0].state=${HOME_ASSISTANT_SHELLY_POWER}
